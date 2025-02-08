@@ -40,7 +40,6 @@ def create_tables():
     existing_tables = set(inspector.get_table_names())
     need_to_be_create_table = registered_tables - existing_tables
 
-
     if need_to_be_create_table:
 
         new_tables = [Base.metadata.tables[table] for table in need_to_be_create_table]
