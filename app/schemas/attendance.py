@@ -22,6 +22,5 @@ class AttendanceReposne(AttendanceCreate):
     check_out : datetime | None = None
     attendance_status : str
 
-
     class Config:
         orm_mode = True
