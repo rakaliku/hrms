@@ -1,0 +1,65 @@
+# Python-related ignores
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.so
+
+# Virtual environment
+venv/
+hrmsvenv/
+ENV/
+env/
+.venv/
+.virtualenv/
+
+# Config and secrets (ensure these are kept safe)
+*.env
+*.env.*
+config.json
+secrets.json
+
+# Database files
+*.sqlite3
+*.db
+
+# Logs and cache
+*.log
+*.cache
+logs/
+debug.log
+
+# FastAPI auto-generated files
+instance/
+__pycache__/
+*.pid
+
+# Deployment files for cPanel or Passenger WSGI
+passenger_wsgi.py
+*.bak
+*.swp
+
+# Pytest and coverage reports
+.coverage
+htmlcov/
+.cache/
+.tox/
+.nox/
+*.coverage.*
+
+# System files and IDE files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Node.js-related (if you're using it for frontend)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Git-specific
+*.orig
