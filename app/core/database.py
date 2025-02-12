@@ -1,8 +1,7 @@
 from sqlalchemy import create_engine, inspect
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-import pymysql
-from ..core.config import settings
+# from ..core.config import settings
 
 # Database Configuration
 username = "root"
