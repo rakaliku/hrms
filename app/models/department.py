@@ -6,3 +6,9 @@ class Department(Base):
     id = Column(Integer,primary_key=True, index=True) # Its Auto increment column
     name = Column(String(100), unique=True, index=True)
 
+    class Config:
+        schema_extra = {
+            "example": {
+                "name": "Human Resources"
+            }
+        }

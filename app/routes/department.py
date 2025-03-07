@@ -7,7 +7,7 @@ from sqlalchemy.exc import IntegrityError
 
 router = APIRouter()
 
-@router.post("/departments/", response_model=DepartmentResponse)
+@router.post("/departments/", response_model=DepartmentResponse, summary="Create Department", tags=["Department"])
 def create_department(department: DepartmentCreate, db: Session = Depends(get_db)):
     try:
         new_department = Department(**department.dict())
