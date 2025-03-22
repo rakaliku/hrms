@@ -4,13 +4,13 @@ from ..models.attendance import Attendance
 from ..schemas.attendance import *
 from ..core.database import get_db
 from sqlalchemy.orm import Session
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 router = APIRouter()
 
 
-@router.post("/attendance/checkin", response_model=AttendanceReposne)
+@router.post("/attendance/checkin", response_model=AttendanceResponse)
 def check_in(attendance: AttendanceCreate, db: Session= Depends(get_db)):
     new_attendance = Attendance(
         employee_id=attendance.employee_id,
@@ -23,9 +23,10 @@ def check_in(attendance: AttendanceCreate, db: Session= Depends(get_db)):
     db.refresh(new_attendance)
     return new_attendance
 
-@router.put("/attendance/checkout/{attendance_id}", response_model=AttendanceReposne)
+@router.put("/attendance/checkout/{attendance_id}", response_model=AttendanceResponse)
 def check_out(attendance_id:int, attendance_data: AttendanceUpdate, db: Session = Depends(get_db)):
     attendance_record = db.query(Attendance).filter(Attendance.attendance_id == attendance_id).first()
+    print("Attendance record--",attendance_record)
     if not attendance_record:
         raise HTTPException(status_code=404, detail="Attendance record not found")
     if attendance_record.check_out:
@@ -39,9 +40,25 @@ def check_out(attendance_id:int, attendance_data: AttendanceUpdate, db: Session 
 
 
 
-@router.get("/attendance/{employee_id}", response_model=list[AttendanceReposne])
+@router.get("/attendance/{employee_id}", response_model=list[AttendanceResponse])
 def get_attendance(employee_id: int, db: Session = Depends(get_db)):
     attendance_record = db.query(Attendance).filter(Attendance.employee_id == employee_id).all()
     if not attendance_record:
         raise HTTPException(status_code=404, detail="Attendance record not found")
     return attendance_record
+
+
+# @router.get("/attendance/date/{date}", response_model=list[AttendanceResponse])
+# def get_attendance_by_date(date: str, db: Session = Depends(get_db)):
+#     parsed_date = datetime.strptime(date, '%Y-%m-%d')
+#     start_date = parsed_date.replace(hour=0, minute=0, second=0, microsecond=0)
+#     end_date = start_date+timedelta(days=1)
+#     print("Querying for date range",start_date, end_date)
+#     attendance_record = db.query(Attendance).filter(Attendance.check_in >= start_date, Attendance.check_in < end_date).all()
+#     if not attendance_record:
+#         raise HTTPException(status_code=404, detail="Attendance record not found")
+#     return attendance_record
+
+@router.get("/attendance", response_model=list[AttendanceResponse])
+def get_all_attendance(db: Session = Depends(get_db)):
+    return db.query(Attendance).all()
