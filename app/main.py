@@ -21,7 +21,7 @@ app.include_router(attendance.router)
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Change "*" to ["http://localhost:3000"] for React frontend in development
+    allow_origins=["http://localhost:5173"],  # Change "*" to ["http://localhost:3000"] for React frontend in development
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

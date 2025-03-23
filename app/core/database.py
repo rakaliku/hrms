@@ -31,7 +31,7 @@ def get_db():
 
 def create_tables():
     """Function to create database tables"""
-    from ..models import department, employee, leave, roles, salary,attendance  # Import all models
+    from ..models import department, employee, leave, roles, salary,attendance,student,class_detail, student_attendance  # Import all models
     print("Registered tables are: ",Base.metadata.tables.keys())  # This will show all tables mapped to Base
     inspector = inspect(engine)
 
@@ -47,3 +47,5 @@ def create_tables():
         print("Database tables created successfully")
     else:
         print("Database tables already exist")
+
+
