@@ -11,4 +11,4 @@ class Student(Base):
     roll_number = Column(String(10), unique=True, nullable=False)
 
     # Relationships
-    student_attendance = relationship("StudentAttendance", back_populates="students")
+    student_attendance = relationship("StudentAttendance", back_populates="student")
