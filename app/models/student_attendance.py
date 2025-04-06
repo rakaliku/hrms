@@ -13,4 +13,4 @@ class StudentAttendance(Base):
 
     # Relationships
     student = relationship("Student", back_populates="student_attendance")
-    class_ = relationship("Class", back_populates="student_attendance")
+    classes = relationship("Class", back_populates="student_attendance")

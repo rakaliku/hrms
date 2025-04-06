@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine, inspect
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, registry
 # from ..core.config import settings
 
 # Database Configuration
@@ -17,6 +17,13 @@ engine = create_engine(DATABASE_URL, echo=True)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
+
+from app.models.student import Student
+from app.models.student_attendance import StudentAttendance
+from app.models.class_detail import Class
+
+mapper_registry = registry()
+mapper_registry.configure()
 
 def get_db():
     db = SessionLocal()
