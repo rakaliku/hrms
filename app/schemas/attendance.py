@@ -1,11 +1,11 @@
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel, field_validator,Field
 from datetime import datetime
 
 class AttendanceCreate(BaseModel):
     """AttendanceCreate model definition."""
     employee_id: int
-    check_in: str  # Change to str for custom validation
-    attendance_status: str
+    check_in: datetime =Field(default_factory=datetime.utcnow) # Change to str for custom validation
+    attendance_status: str = "In"
 
     @field_validator('check_in')
     def validate_check_in(cls, value):
@@ -18,14 +18,14 @@ class AttendanceCreate(BaseModel):
 
 class AttendanceUpdate(AttendanceCreate):
     """AttendanceUpdate model definition."""
-    check_out: str  # Change to str for custom validation
+    check_out: datetime =Field(default_factory=datetime.utcnow)#str  # Change to str for custom validation
 
-    @field_validator('check_out')
-    def validate_check_out(cls, value):
-        try:
-            return datetime.strptime(value, '%Y-%m-%d')
-        except ValueError:
-            raise ValueError('check_out must be in yyyy-mm-dd format')
+    # @field_validator('check_out')
+    # def validate_check_out(cls, value):
+    #     try:
+    #         return datetime.strptime(value, '%Y-%m-%d')
+    #     except ValueError:
+    #         raise ValueError('check_out must be in yyyy-mm-dd format')
 
 class AttendanceResponse(AttendanceCreate):
     """AttendanceResponse model definition."""
