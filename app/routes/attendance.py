@@ -66,6 +66,6 @@ def get_attendance(employee_id: int, db: Session = Depends(get_db)):
 #         raise HTTPException(status_code=404, detail="Attendance record not found")
 #     return attendance_record
 
-@router.get("/attendance", response_model=list[AttendanceResponse])
+@router.get("/attendance/all/", response_model=list[AttendanceResponse])
 def get_all_attendance(db: Session = Depends(get_db)):
     return db.query(Attendance).all()
