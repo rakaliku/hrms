@@ -14,7 +14,7 @@ router = APIRouter()
 def check_in(attendance: AttendanceCreate, db: Session= Depends(get_db)):
     new_attendance = Attendance(
         employee_id=attendance.employee_id,
-        check_in=attendance.check_in,
+        check_in= attendance.check_in,
         attendance_status = "In"
     )
 
@@ -23,9 +23,15 @@ def check_in(attendance: AttendanceCreate, db: Session= Depends(get_db)):
     db.refresh(new_attendance)
     return new_attendance
 
-@router.put("/attendance/checkout/{attendance_id}", response_model=AttendanceResponse)
-def check_out(attendance_id:int, attendance_data: AttendanceUpdate, db: Session = Depends(get_db)):
-    attendance_record = db.query(Attendance).filter(Attendance.attendance_id == attendance_id).first()
+@router.put("/attendance/checkout/{employee_id}", response_model=AttendanceResponse)
+def check_out(employee_id:int, attendance_data: AttendanceUpdate, db: Session = Depends(get_db)):
+    #attendance_record = db.query(Attendance).filter(Attendance.attendance_id == attendance_id).first()
+    attendance_record =(
+        db.query(Attendance)
+        .filter(Attendance.employee_id == employee_id, Attendance.check_out == None)
+        .order_by(Attendance.check_in.desc())
+        .first()
+    )
     print("Attendance record--",attendance_record)
     if not attendance_record:
         raise HTTPException(status_code=404, detail="Attendance record not found")
@@ -33,7 +39,8 @@ def check_out(attendance_id:int, attendance_data: AttendanceUpdate, db: Session 
         raise HTTPException(status_code=400, detail="Attendance record already checked out")
     
 
-    attendance_record.check_out = attendance_data.check_out
+    attendance_record.check_out = datetime.utcnow()
+    attendance_record.attendance_status = "Out"
     db.commit()
     db.refresh(attendance_record)
     return attendance_record
@@ -59,6 +66,6 @@ def get_attendance(employee_id: int, db: Session = Depends(get_db)):
 #         raise HTTPException(status_code=404, detail="Attendance record not found")
 #     return attendance_record
 
-@router.get("/attendance", response_model=list[AttendanceResponse])
+@router.get("/attendance/all/", response_model=list[AttendanceResponse])
 def get_all_attendance(db: Session = Depends(get_db)):
     return db.query(Attendance).all()
